@@ -1,0 +1,8 @@
+package: .
+import:
+- package: code.cloudfoundry.org/lager
+  version: v2.0.0
+- package: github.com/pivotal-cf/brokerapi
+  version: v6.0.0
+- package: github.com/gorilla/mux
+  version: v1.7.3

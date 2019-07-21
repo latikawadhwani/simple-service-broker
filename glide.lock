@@ -1,0 +1,19 @@
+hash: 47c5a8ad49e9a6a1af4ddac6098c58bd09792d4053a675179917a8f614552d96
+updated: 2019-07-20T17:12:16.120206-07:00
+imports:
+- name: code.cloudfoundry.org/lager
+  version: b152b7147a2a0154109a5194fcc7f4a933283abb
+- name: github.com/gorilla/mux
+  version: 00bdffe0f3c77e27d2cf6f5c70232a2d3e4d9c15
+- name: github.com/pivotal-cf/brokerapi
+  version: 68c365cab8d04af688c8fc12aea42d6d4017e8f0
+  subpackages:
+  - auth
+  - domain
+  - domain/apiresponses
+  - handlers
+  - middlewares
+  - utils
+- name: github.com/pkg/errors
+  version: 27936f6d90f9c8e1145f11ed52ffffbfdb9e0af7
+testImports: []
