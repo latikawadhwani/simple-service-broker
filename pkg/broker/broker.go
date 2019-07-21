@@ -1,7 +1,7 @@
 package broker
 
 import (
-	
+	"context"
 	"encoding/json"
 	"fmt"
 	"os"
@@ -62,3 +62,14 @@ func getEnvWithDefault(key, defaultValue string) string {
 	return os.Getenv(key)
 }
 
+func (bkr *BrokerImpl) Bind(ctx context.Context, instanceID string, bindingID string, details brokerapi.BindDetails, asyncAllowed bool) (brokerapi.Binding, error) {
+	var parameters interface{}
+	json.Unmarshal(details.GetRawParameters(), &parameters)
+	bkr.Bindings[bindingID] = brokerapi.GetBindingSpec{
+		Credentials: bkr.Config.Credentials,
+		Parameters:  parameters,
+	}
+	return brokerapi.Binding{
+		Credentials: bkr.Config.Credentials,
+	}, nil
+}
