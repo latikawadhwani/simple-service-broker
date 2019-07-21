@@ -79,3 +79,25 @@ func (bkr *BrokerImpl) Deprovision(ctx context.Context, instanceID string, detai
 		IsAsync: bkr.Config.FakeAsync,
 	}, nil
 }
+func (bkr *BrokerImpl) GetBinding(ctx context.Context, instanceID string, bindingID string) (spec brokerapi.GetBindingSpec, err error) {
+	if val, ok := bkr.Bindings[bindingID]; ok {
+		return val, nil
+	}
+	err = brokerapi.NewFailureResponse(fmt.Errorf("Unknown binding ID %s", bindingID), 404, "get-binding")
+	return
+}
+func (bkr *BrokerImpl) Update(ctx context.Context, instanceID string, details brokerapi.UpdateDetails, asyncAllowed bool) (brokerapi.UpdateServiceSpec, error) {
+	return brokerapi.UpdateServiceSpec{
+		IsAsync: bkr.Config.FakeAsync,
+	}, nil
+}
+
+func (bkr *BrokerImpl) LastOperation(ctx context.Context, instanceID string, details brokerapi.PollDetails) (brokerapi.LastOperation, error) {
+	return brokerapi.LastOperation{
+		State: brokerapi.Succeeded,
+	}, nil
+}
+
+func (bkr *BrokerImpl) LastBindingOperation(ctx context.Context, instanceID string, bindingID string, details brokerapi.PollDetails) (brokerapi.LastOperation, error) {
+	panic("not implemented")
+}
