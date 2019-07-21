@@ -73,3 +73,9 @@ func (bkr *BrokerImpl) Bind(ctx context.Context, instanceID string, bindingID st
 		Credentials: bkr.Config.Credentials,
 	}, nil
 }
+
+func (bkr *BrokerImpl) Deprovision(ctx context.Context, instanceID string, details brokerapi.DeprovisionDetails, asyncAllowed bool) (brokerapi.DeprovisionServiceSpec, error) {
+	return brokerapi.DeprovisionServiceSpec{
+		IsAsync: bkr.Config.FakeAsync,
+	}, nil
+}
