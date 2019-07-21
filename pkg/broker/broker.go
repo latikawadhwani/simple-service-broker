@@ -101,3 +101,14 @@ func (bkr *BrokerImpl) LastOperation(ctx context.Context, instanceID string, det
 func (bkr *BrokerImpl) LastBindingOperation(ctx context.Context, instanceID string, bindingID string, details brokerapi.PollDetails) (brokerapi.LastOperation, error) {
 	panic("not implemented")
 }
+
+func (bkr *BrokerImpl) GetInstance(ctx context.Context, instanceID string) (spec brokerapi.GetInstanceDetailsSpec, err error) {
+	if val, ok := bkr.Instances[instanceID]; ok {
+		return val, nil
+	}
+	err = brokerapi.NewFailureResponse(fmt.Errorf("Unknown instance ID %s", instanceID), 404, "get-instance")
+	return
+}
+func (bkr *BrokerImpl) Unbind(ctx context.Context, instanceID string, bindingID string, details brokerapi.UnbindDetails, asyncAllowed bool) (brokerapi.UnbindSpec, error) {
+	return brokerapi.UnbindSpec{}, nil
+}
