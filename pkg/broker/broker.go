@@ -74,6 +74,23 @@ func (bkr *BrokerImpl) Bind(ctx context.Context, instanceID string, bindingID st
 	}, nil
 }
 
+func (bkr *BrokerImpl) Unbind(ctx context.Context, instanceID string, bindingID string, details brokerapi.UnbindDetails, asyncAllowed bool) (brokerapi.UnbindSpec, error) {
+	return brokerapi.UnbindSpec{}, nil
+}
+
+func (bkr *BrokerImpl) Provision(ctx context.Context, instanceID string, details brokerapi.ProvisionDetails, asyncAllowed bool) (brokerapi.ProvisionedServiceSpec, error) {
+	var parameters interface{}
+	json.Unmarshal(details.GetRawParameters(), &parameters)
+	bkr.Instances[instanceID] = brokerapi.GetInstanceDetailsSpec{
+		ServiceID:  details.ServiceID,
+		PlanID:     details.PlanID,
+		Parameters: parameters,
+	}
+	return brokerapi.ProvisionedServiceSpec{
+		IsAsync: bkr.Config.FakeAsync,
+	}, nil
+}
+
 func (bkr *BrokerImpl) Deprovision(ctx context.Context, instanceID string, details brokerapi.DeprovisionDetails, asyncAllowed bool) (brokerapi.DeprovisionServiceSpec, error) {
 	return brokerapi.DeprovisionServiceSpec{
 		IsAsync: bkr.Config.FakeAsync,
@@ -108,7 +125,4 @@ func (bkr *BrokerImpl) GetInstance(ctx context.Context, instanceID string) (spec
 	}
 	err = brokerapi.NewFailureResponse(fmt.Errorf("Unknown instance ID %s", instanceID), 404, "get-instance")
 	return
-}
-func (bkr *BrokerImpl) Unbind(ctx context.Context, instanceID string, bindingID string, details brokerapi.UnbindDetails, asyncAllowed bool) (brokerapi.UnbindSpec, error) {
-	return brokerapi.UnbindSpec{}, nil
 }
