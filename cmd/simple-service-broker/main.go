@@ -5,6 +5,8 @@ import (
 	"net/http"
 	"os"
 
+	"github.com/latikawadhwani/simple-service-broker/pkg/broker"
+
 	"code.cloudfoundry.org/lager"
 	"github.com/pivotal-cf/brokerapi"
 )
