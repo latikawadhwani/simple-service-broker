@@ -62,6 +62,31 @@ func getEnvWithDefault(key, defaultValue string) string {
 	return os.Getenv(key)
 }
 
+func (bkr *BrokerImpl) Services(ctx context.Context) ([]brokerapi.Service, error) {
+	return []brokerapi.Service{
+		brokerapi.Service{
+			ID:                   bkr.Config.BaseGUID + "-service-" + bkr.Config.ServiceName,
+			Name:                 bkr.Config.ServiceName,
+			Description:          "Shared service for " + bkr.Config.ServiceName,
+			Bindable:             true,
+			InstancesRetrievable: bkr.Config.FakeStateful,
+			BindingsRetrievable:  bkr.Config.FakeStateful,
+			Metadata: &brokerapi.ServiceMetadata{
+				DisplayName: bkr.Config.ServiceName,
+				ImageUrl:    bkr.Config.ImageURL,
+			},
+			Plans: []brokerapi.ServicePlan{
+				brokerapi.ServicePlan{
+					ID:          bkr.Config.BaseGUID + "-plan-" + bkr.Config.ServicePlan,
+					Name:        bkr.Config.ServicePlan,
+					Description: "Shared service for " + bkr.Config.ServiceName,
+					Free:        &bkr.Config.Free,
+				},
+			},
+		},
+	}, nil
+}
+
 func (bkr *BrokerImpl) Bind(ctx context.Context, instanceID string, bindingID string, details brokerapi.BindDetails, asyncAllowed bool) (brokerapi.Binding, error) {
 	var parameters interface{}
 	json.Unmarshal(details.GetRawParameters(), &parameters)
